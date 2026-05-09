@@ -22,6 +22,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'status',
+        'phone',
+        'dni',
     ];
 
     /**
@@ -33,6 +37,18 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    // Un usuario puede tener muchos reportes
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
+
+    // Un usuario puede tener muchas notificaciones
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 
     /**
      * Get the attributes that should be cast.
