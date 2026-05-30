@@ -66,11 +66,11 @@
                                 class="px-4 py-2 bg-blue-600 text-white rounded">
                             Usar mi ubicación actual
                         </button>
-
-                        <button type="button" id="btnAbrirMapa"
-                                class="px-4 py-2 bg-green-600 text-white rounded">
-                            Abrir en Google Maps
-                        </button>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block mb-2 font-medium">Selecciona la ubicación en el mapa</label>
+                        <p class="text-sm text-gray-500 mb-2">Haz clic en el mapa para marcar el punto exacto del incendio.</p>
+                        <div id="mapa" style="height: 350px; border-radius: 8px; border: 1px solid #ccc;"></div>
                     </div>
 
                     <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded">
@@ -81,47 +81,85 @@
         </div>
     </div>
 
-    <script>
-        const btnUbicacionActual = document.getElementById('btnUbicacionActual');
-        const btnAbrirMapa = document.getElementById('btnAbrirMapa');
-        const inputLat = document.getElementById('latitude');
-        const inputLng = document.getElementById('longitude');
-        const inputTipo = document.getElementById('location_type');
+ {{-- Leaflet CSS y JS (mapa gratuito sin API key) --}}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-        // Centro aproximado de Arequipa
-        const defaultLat = -16.409047;
-        const defaultLng = -71.537451;
+<script>
+    const inputLat  = document.getElementById('latitude');
+    const inputLng  = document.getElementById('longitude');
+    const inputTipo = document.getElementById('location_type');
 
-        btnUbicacionActual.addEventListener('click', () => {
-            if (!navigator.geolocation) {
-                alert('Tu navegador no permite geolocalización.');
-                return;
-            }
+    // Centro aproximado de Arequipa
+    const defaultLat = -16.409047;
+    const defaultLng = -71.537451;
 
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    inputLat.value = position.coords.latitude.toFixed(7);
-                    inputLng.value = position.coords.longitude.toFixed(7);
-                    inputTipo.value = 'auto';
-                    alert('Ubicación actual obtenida correctamente.');
-                },
-                () => {
-                    alert('No se pudo obtener la ubicación. Puedes ingresarla manualmente.');
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
+    // Inicializar mapa
+    const mapa = L.map('mapa').setView([defaultLat, defaultLng], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(mapa);
+
+    // Marcador (se crea solo al hacer clic)
+    let marcador = null;
+
+    // Si ya hay valores guardados (por old()), colocar marcador
+    if (inputLat.value && inputLng.value) {
+        const lat = parseFloat(inputLat.value);
+        const lng = parseFloat(inputLng.value);
+        marcador = L.marker([lat, lng]).addTo(mapa);
+        mapa.setView([lat, lng], 15);
+    }
+
+    // Clic en el mapa → guardar coordenadas
+    mapa.on('click', (e) => {
+        const { lat, lng } = e.latlng;
+
+        inputLat.value  = lat.toFixed(7);
+        inputLng.value  = lng.toFixed(7);
+        inputTipo.value = 'manual';
+
+        if (marcador) {
+            marcador.setLatLng([lat, lng]);
+        } else {
+            marcador = L.marker([lat, lng]).addTo(mapa);
+        }
+
+        marcador.bindPopup(`📍 ${lat.toFixed(5)}, ${lng.toFixed(5)}`).openPopup();
+    });
+
+    // Botón ubicación actual → centra y marca en el mapa
+    document.getElementById('btnUbicacionActual').addEventListener('click', () => {
+        if (!navigator.geolocation) {
+            alert('Tu navegador no permite geolocalización.');
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                inputLat.value  = lat.toFixed(7);
+                inputLng.value  = lng.toFixed(7);
+                inputTipo.value = 'auto';
+
+                mapa.setView([lat, lng], 16);
+
+                if (marcador) {
+                    marcador.setLatLng([lat, lng]);
+                } else {
+                    marcador = L.marker([lat, lng]).addTo(mapa);
                 }
-            );
-        });
 
-        btnAbrirMapa.addEventListener('click', () => {
-            const lat = inputLat.value || defaultLat;
-            const lng = inputLng.value || defaultLng;
-
-            const url = `https://www.google.com/maps?q=${lat},${lng}&z=17`;
-            window.open(url, '_blank');
-        });
-    </script>
+                marcador.bindPopup('📍 Tu ubicación actual').openPopup();
+            },
+            () => {
+                alert('No se pudo obtener la ubicación. Haz clic en el mapa para marcarla.');
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+    });
+</script>
 </x-app-layout>

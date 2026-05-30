@@ -16,7 +16,7 @@
 
                         <a href="{{ route('reports.create') }}"
                         class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
-                            Crear reporte de incendio
+                            Crear reporte de incendio 
                         </a>
                     </div>
                 </div>
