@@ -1,29 +1,95 @@
 <?php
 
+// Importa las herramientas necesarias de Laravel para crear rutas
 use Illuminate\Support\Facades\Route;
+
+// Importa el controlador del perfil de usuario
 use App\Http\Controllers\ProfileController;
+
+// Importa el controlador encargado de los reportes de incendios
 use App\Http\Controllers\ReportController;
 
-// Página principal
+/*
+|--------------------------------------------------------------------------
+| Página principal
+|--------------------------------------------------------------------------
+|
+| Cuando alguien entra a la dirección principal del proyecto (/),
+| Laravel mostrará la vista llamada "home".
+|
+*/
 Route::view('/', 'home');
 
-// Dashboard
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+|
+| Esta es la pantalla principal después de iniciar sesión.
+| Solo pueden acceder usuarios autenticados y verificados.
+|
+*/
 Route::get('/dashboard', function () {
+
+    // Muestra la vista dashboard.blade.php
     return view('dashboard');
+
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Rutas protegidas por login
+/*
+|--------------------------------------------------------------------------
+| Rutas protegidas
+|--------------------------------------------------------------------------
+|
+| Todas las rutas dentro de este grupo requieren que el usuario
+| haya iniciado sesión.
+|
+*/
 Route::middleware('auth')->group(function () {
 
-    // Perfil
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    /*
+    |--------------------------------------------------------------------------
+    | Perfil de usuario
+    |--------------------------------------------------------------------------
+    */
 
-    // Reportes
-    Route::get('/reportes/crear', [ReportController::class, 'create'])->name('reports.create');
-    Route::post('/reportes', [ReportController::class, 'store'])->name('reports.store');
+    // Muestra el formulario para editar el perfil
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+
+    // Guarda los cambios realizados en el perfil
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    // Elimina la cuenta del usuario
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reportes de incendios
+    |--------------------------------------------------------------------------
+    */
+
+    // Muestra el formulario para crear un nuevo reporte
+    Route::get('/reportes/crear', [ReportController::class, 'create'])
+        ->name('reports.create');
+
+    // Recibe y guarda los datos enviados desde el formulario
+    Route::post('/reportes', [ReportController::class, 'store'])
+        ->name('reports.store');
 });
 
-// Login, register, forgot-password, etc.
+/*
+|--------------------------------------------------------------------------
+| Rutas de autenticación
+|--------------------------------------------------------------------------
+|
+| Este archivo contiene todas las rutas creadas por Laravel Breeze:
+| - Login
+| - Registro
+| - Recuperar contraseña
+| - Cerrar sesión
+|
+*/
 require __DIR__.'/auth.php';
