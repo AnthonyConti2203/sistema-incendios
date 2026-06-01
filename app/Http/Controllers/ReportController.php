@@ -2,45 +2,108 @@
 
 namespace App\Http\Controllers;
 
-// "Importamos" herramientas que vamos a usar más abajo
+// Modelo que representa la tabla de reportes
 use App\Models\Report;
+
+// Permite recibir los datos enviados desde formularios
 use Illuminate\Http\Request;
+
+// Permite obtener información del usuario que inició sesión
 use Illuminate\Support\Facades\Auth;
 
-// Definimos la clase ReportController
+// Controlador encargado de la lógica relacionada con los reportes
 class ReportController extends Controller
 {
-    // Muestra el formulario para crear un reporte
+    /*
+    |--------------------------------------------------------------------------
+    | Mostrar formulario
+    |--------------------------------------------------------------------------
+    |
+    | Este método se ejecuta cuando el usuario entra a:
+    | /reportes/crear
+    |
+    */
     public function create()
     {
-        // 'reports.create' significa: busca el archivo
+        // Abre la vista resources/views/reports/create.blade.php
         return view('reports.create');
     }
 
-    // Guarda el reporte en la base de datos
+    /*
+    |--------------------------------------------------------------------------
+    | Guardar reporte
+    |--------------------------------------------------------------------------
+    |
+    | Este método recibe los datos del formulario y los guarda
+    | en la base de datos.
+    |
+    */
     public function store(Request $request)
     {
-        // Validación básica
+        /*
+        |--------------------------------------------------------------------------
+        | Validación de datos
+        |--------------------------------------------------------------------------
+        |
+        | Antes de guardar la información verificamos que los
+        | datos tengan el formato correcto.
+        |
+        */
+
         $validated = $request->validate([
-            //  nullable: opcional y required es obligatorio
+
+            // La descripción es opcional
             'description' => 'nullable|string|max:1000',
+
+            // La latitud es obligatoria y debe ser numérica
             'latitude' => 'required|numeric',
+
+            // La longitud es obligatoria y debe ser numérica
             'longitude' => 'required|numeric',
+
+            // Solo se aceptan estos dos valores
             'location_type' => 'required|in:auto,manual',
         ]);
 
-        // Crear el reporte
-        // Report::create() inserta una nueva fila en la tabla 'reports'
+        /*
+        |--------------------------------------------------------------------------
+        | Crear reporte
+        |--------------------------------------------------------------------------
+        |
+        | Una vez validados los datos, se registra un nuevo
+        | reporte en la base de datos.
+        |
+        */
+
         Report::create([
+
+            // Usuario que realizó el reporte
             'user_id' => Auth::id(),
+
+            // Descripción escrita por el ciudadano
             'description' => $validated['description'],
+
+            // Coordenadas del incendio
             'latitude' => $validated['latitude'],
             'longitude' => $validated['longitude'],
+
+            // Tipo de ubicación seleccionada
             'location_type' => $validated['location_type'],
+
+            // Estado inicial del reporte
             'status' => 'enviado',
         ]);
-        // Después de guardar, lo mandamos de vuelta al formulario
-        // y le mostramos un mensaje de éxito
+
+        /*
+        |--------------------------------------------------------------------------
+        | Redirección
+        |--------------------------------------------------------------------------
+        |
+        | Después de guardar el reporte se vuelve a abrir el
+        | formulario y se muestra un mensaje de éxito.
+        |
+        */
+
         return redirect()
             ->route('reports.create')
             ->with('success', 'Reporte enviado correctamente.');
