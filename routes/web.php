@@ -18,6 +18,8 @@ use App\Http\Controllers\ReportController;
 | Laravel mostrará la vista llamada "home".
 |
 */
+//el route view es un atajo
+//mostrara el home
 Route::view('/', 'home');
 
 /*
@@ -29,12 +31,22 @@ Route::view('/', 'home');
 | Solo pueden acceder usuarios autenticados y verificados.
 |
 */
+
+//el get es el navegador pide una pagina 
 Route::get('/dashboard', function () {
 
     // Muestra la vista dashboard.blade.php
     return view('dashboard');
 
 })->middleware(['auth', 'verified'])->name('dashboard');
+//el auth exige sesion iniciada
+//si no esta iniciada se dirigira a login
+
+//verified exige que el email este verificado
+//sino lo redigira a una paian de navegacion
+
+//name() le da un nombre
+//laravel buscara la url asociada el nombre
 
 /*
 |--------------------------------------------------------------------------
