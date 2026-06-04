@@ -229,6 +229,8 @@
             marcador = L.marker([lat, lng]).addTo(mapa);
         }
 
+        // Mostrar un mensaje emergente (popup) sobre el marcador
+        //que en este caso seria las coordenadas
         if (textoPopup) {
             marcador.bindPopup(textoPopup).openPopup();
         }
