@@ -274,7 +274,7 @@
     // Si ya había valores guardados por old()
     //osea si ya hay algo escrito
     //despues de un error de validacion
-    if (inputLat.value && inputLng.value) {
+    /*if (inputLat.value && inputLng.value) {
         //convierte de texto a numero
         //osea de "123" a 123
         const lat = parseFloat(inputLat.value);
@@ -293,7 +293,7 @@
             //muestra el mensaje osea ya se vio
             ubicacionAutoInfo.classList.remove('hidden');
         }
-    }
+    }*/
 
     // Elegir ubicación manualmente en el mapa
     btnMapa.addEventListener('click', () => {

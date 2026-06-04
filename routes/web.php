@@ -1,5 +1,5 @@
 <?php
-
+//define a que url puede ir el usuario
 // Importa las herramientas necesarias de Laravel para crear rutas
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +58,7 @@ Route::get('/dashboard', function () {
 |
 */
 Route::middleware('auth')->group(function () {
+    //todo lo que esta adentro , debe estra logueado por el usuario 
 
     /*
     |--------------------------------------------------------------------------
@@ -66,6 +67,7 @@ Route::middleware('auth')->group(function () {
     */
 
     // Muestra el formulario para editar el perfil
+
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
 
