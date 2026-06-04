@@ -178,6 +178,8 @@
     <!--fin-->
 
 <script>
+    //busca el elemento latitud por su ID
+    //y lo guarda en inputLat
     const inputLat = document.getElementById('latitude');
     const inputLng = document.getElementById('longitude');
     const inputTipo = document.getElementById('location_type');
@@ -193,9 +195,14 @@
     const defaultLat = -16.409047;
     const defaultLng = -71.537451;
 
-    // Inicializar mapa
+    // Inicializar mapa con zoom de 13
     const mapa = L.map('mapa').setView([defaultLat, defaultLng], 13);
 
+    //en pequeñas imagenes , leaflet las descarfa de openStreetMap
+    //{s}: servidor
+    //{z}: nivel de zoom
+    //{x}:coordenadas horizontal
+    //{y}:coordenada vertical
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(mapa);
@@ -235,9 +242,16 @@
             - oculta el mensaje de GPS
             - cambia location_type a "manual"*/
         inputTipo.value = 'manual';
+        //elimina la clase hiddden, osea que mostrara el mapa
         mapSection.classList.remove('hidden');
+        //agrega la clase hidden a ubicacionAutoInfo
         ubicacionAutoInfo.classList.add('hidden');
 
+        //lo que hace es que cuando el mapa esta ocultado
+        //el leaflet no lo calcular
+        //em mapa.invalidate hace qye lo recalcule
+        //y el 100 es 100ms , el tiempo que renderizara 
+        //el div 
         setTimeout(() => {
             mapa.invalidateSize();
         }, 100);
@@ -256,34 +270,48 @@
     }
 
     // Si ya había valores guardados por old()
+    //osea si ya hay algo escrito
+    //despues de un error de validacion
     if (inputLat.value && inputLng.value) {
+        //convierte de texto a numero
+        //osea de "123" a 123
         const lat = parseFloat(inputLat.value);
         const lng = parseFloat(inputLng.value);
 
+        //aca centra el mapa en esto con zoom a 15
         mapa.setView([lat, lng], 15);
+        //el tofixed es la cantidad de decimales 
         ponerMarcador(lat, lng, `📍 ${lat.toFixed(5)}, ${lng.toFixed(5)}`);
 
         // Si ya había ubicación, mostramos el mapa
         mapSection.classList.remove('hidden');
 
+        //aca es si la ubicacion es automatica
         if (inputTipo.value === 'auto') {
+            //muestra el mensaje osea ya se vio
             ubicacionAutoInfo.classList.remove('hidden');
         }
     }
 
     // Elegir ubicación manualmente en el mapa
     btnMapa.addEventListener('click', () => {
+        //llama a la funcion 
         activarModoManual();
         mapSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        //el behavior: 'smooth' hace dezplazamiento suave
+        //block: 'start' el mapa aparece desde arriba de la ventana 
     });
 
     mapa.on('click', (e) => {
+        //e significa evento, osea una variable
         /* Cuando el usuario hace clic:
 
         1. Obtiene las coordenadas.
         2. Las guarda en el formulario.
         3. Coloca un marcador.
         4. Marca la ubicación como manual.*/
+
+        //se obtiene las coordenadas
         const { lat, lng } = e.latlng;
 
         inputLat.value = lat.toFixed(7);
@@ -295,6 +323,9 @@
 
     // Usar ubicación actual del dispositivo
     btnAuto.addEventListener('click', () => {
+        //lo que hace esta liena es si el navegador osea
+        //si esta viejo o algo por el estilo
+        //mostrara alerta y el mensaje
         if (!navigator.geolocation) {
             alert('Tu navegador no permite geolocalización.');
             return;
