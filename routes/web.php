@@ -92,6 +92,11 @@ Route::middleware('auth')->group(function () {
     // Recibe y guarda los datos enviados desde el formulario
     Route::post('/reportes', [ReportController::class, 'store'])
         ->name('reports.store');
+
+    Route::get('/whatsapp-simulator', function () {
+        return view('simulador');
+    })->name('whatsapp.simulator');
+
 });
 
 /*

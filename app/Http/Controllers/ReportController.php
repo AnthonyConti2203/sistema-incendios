@@ -9,7 +9,6 @@ use App\Models\Report;
 
 // Permite recibir los datos enviados desde formularios
 //representa el formulario que el usuario envio
-//contiene otro 
 use Illuminate\Http\Request;
 
 // Permite obtener información del usuario que inició sesión
@@ -28,9 +27,8 @@ class ReportController extends Controller
     | /reportes/crear
     |
     */
-    public function create()//lo que hace aca es cuando el usuario hace 
-    {//click aca muestra el formulario 
-
+    public function create()
+    {   //click aca muestra el formulario 
         // Abre la vista resources/views/reports/create.blade.php
         return view('reports.create');
     }
@@ -57,8 +55,7 @@ class ReportController extends Controller
         | datos tengan el formato correcto.
         |
         */
-        //si algo falla detiene todo 
-        $validated = $request->validate([
+        $validated = $request->validate([//si algo falla detiene todo 
 
             // La descripción es opcional
             'description' => 'nullable|string|max:1000',
@@ -83,7 +80,7 @@ class ReportController extends Controller
         |
         */
 
-        Report::create([
+        $reporte=Report::create([
 
             // Usuario que realizó el reporte
             //el auth ::id() devuelve el id del usuario que ingreso
@@ -104,6 +101,9 @@ class ReportController extends Controller
             'status' => 'enviado',
         ]);
 
+        $reporteMensaje = " *REPORTE DE INCENDIO ENVIADO* \n\n" .
+                        "📝 *Descripción:* " . ($reporte->description ?? 'Sin descripción') . "\n" .
+                        "🌐 *Coordenadas:* Lat: " . $reporte->latitude . ", Lng: " . $reporte->longitude;
         /*
         |--------------------------------------------------------------------------
         | Redirección
@@ -116,6 +116,7 @@ class ReportController extends Controller
 
         return redirect()
             ->route('reports.create')
-            ->with('success', 'Reporte enviado correctamente.');
+            ->with('success', 'Reporte enviado correctamente.')
+            ->with('whatsapp_text', $reporteMensaje);
     }
 }
