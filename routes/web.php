@@ -111,4 +111,4 @@ Route::middleware('auth')->group(function () {
 | - Cerrar sesión
 |
 */
-require __DIR__.'/auth.php';
+require_once __DIR__.'/auth.php';

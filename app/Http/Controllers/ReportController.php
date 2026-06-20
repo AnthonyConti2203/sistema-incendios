@@ -144,8 +144,8 @@ class ReportController extends Controller
         }
 
         $reporteMensaje = " *REPORTE DE INCENDIO ENVIADO* \n\n" .
-                        "📝 *Descripción:* " . ($reporte->description ?? 'Sin descripción') . "\n" .
-                        "🌐 *Coordenadas:* Lat: " . $reporte->latitude . ", Lng: " . $reporte->longitude;
+                        " *Descripción:* " . ($reporte->description ?? 'Sin descripción') . "\n" .//lo que hace el ?? es si hay descripcion se toma , sino se pone sin descripcion
+                        " *Coordenadas:* Lat: " . $reporte->latitude . ", Lng: " . $reporte->longitude;
         /*
         |--------------------------------------------------------------------------
         | Redirección
@@ -159,6 +159,6 @@ class ReportController extends Controller
         return redirect()
             ->route('reports.create')
             ->with('success', 'Reporte enviado correctamente.')
-            ->with('whatsapp_text', $reporteMensaje);
+            ->with('whatsapp_text', $reporteMensaje); //guarda en wasap web en contenido de reporteMnesaje
     }
 }
