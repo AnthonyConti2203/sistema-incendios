@@ -15,9 +15,7 @@ class ProfileController extends Controller
      * Display the user's profile form.
      */
     public function edit(Request $request): View
-    {   
-        // Muestra la vista del perfil y le pasa
-        // los datos del usuario logueado
+    {   // Muestra la vista del perfil y le pasa los datos del usuario logueado
         return view('profile.edit', [
             'user' => $request->user(),// Obtiene el usuario de la sesión actual
         ]);

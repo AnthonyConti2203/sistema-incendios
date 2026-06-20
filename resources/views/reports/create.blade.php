@@ -157,6 +157,11 @@
                         se puso "a" ya que se esta usando tailwind css
                         -->
                     @if (session('success') && session('whatsapp_text'))
+                        <!--
+                        -el session es como un casillero temporal, cuando el usuario 
+                        guard o envio el reporte y cuando el controlador guardo el etxto que se 
+                        va a usar en el simulador
+                        -->
                         <div class="mb-6 flex justify-center">
                             <a href="{{ route('whatsapp.simulator', ['text' => session('whatsapp_text')]) }}" 
                             class="inline-flex items-center px-5 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-lg shadow-md">

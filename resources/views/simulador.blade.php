@@ -22,11 +22,22 @@
                         <span>&#8942;</span>
                     </div>
                 </div>
-
+                <!--
+                    el if (request y toda la linea)
+                    revisa si se envio un parametro  que 
+                    se llame text con imformacion
+                -->
                 <div class="cuerpo-principal">
                     @if(request()->query('text'))
                         <div class="globo-whatsapp">
                             {!! nl2br(e(request()->query('text'))) !!}
+                            <!--
+                                esta linea de codigo es
+                                -request()-. query(text) agarra el texto 
+                                -e es una funcion que impia el texto, evita que se meta codigo dañino como el caso de XSS
+                                -nl2br encargada de convertir los saltos en linea normales en etiquetas, para que no queden pegadas
+                                -{!!...!!} le dice al motor de vistas de laravel que muestre el resultado inteprendando los br
+                            -->
                         </div>
                     @endif
                 </div>
@@ -63,7 +74,7 @@
             gap: 12px;
         }
 
-        /*CORRECCIÓN PUNTUAL: SOLO EL GLOBO VERDe*/
+        /*esto es para que se muestre como en el whatApp*/
         .globo-whatsapp {
             background: #DCF8C6;
             color: #303030;
