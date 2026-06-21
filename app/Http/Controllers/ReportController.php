@@ -49,16 +49,7 @@ class ReportController extends Controller
     //que en este caso lo recibe en $request
     public function store(Request $request)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Validación de datos
-        |--------------------------------------------------------------------------
-        |
-        | Antes de guardar la información verificamos que los
-        | datos tengan el formato correcto.
-        |
-        */
-        $validated = $request->validate([//si algo falla detiene todo 
+        $validated = $request->validate([
 
             // La descripción es opcional
             'description' => 'nullable|string|max:1000',
@@ -144,8 +135,9 @@ class ReportController extends Controller
         }
 
         $reporteMensaje = " *REPORTE DE INCENDIO ENVIADO* \n\n" .
-                        " *Descripción:* " . ($reporte->description ?? 'Sin descripción') . "\n" .//lo que hace el ?? es si hay descripcion se toma , sino se pone sin descripcion
-                        " *Coordenadas:* Lat: " . $reporte->latitude . ", Lng: " . $reporte->longitude;
+            " *Descripción:* " . ($reporte->description ?? 'Sin descripción') . "\n" .
+            //lo que hace el ?? es si hay descripcion se toma , sino se pone sin descripcion
+            " *Coordenadas:* Lat: " . $reporte->latitude . ", Lng: " . $reporte->longitude;
         /*
         |--------------------------------------------------------------------------
         | Redirección
