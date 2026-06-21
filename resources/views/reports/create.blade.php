@@ -190,7 +190,8 @@
                         -->
                         <div class="mb-6 flex justify-center">
                             <a href="{{ route('whatsapp.simulator', ['text' => session('whatsapp_text')]) }}" 
-                            class="inline-flex items-center px-5 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-lg shadow-md">
+                            class="inline-flex items-center px-5 py-3 bg-green-600 
+                            hover:bg-green-700 text-white font-bold text-sm rounded-lg shadow-md">
                             Ir simulador
                             </a>
                         </div>
