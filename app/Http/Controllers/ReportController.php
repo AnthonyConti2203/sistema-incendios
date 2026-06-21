@@ -112,10 +112,11 @@ class ReportController extends Controller
         | En la base de datos solo se guarda la ruta.
         |
         */
+        $whatsappImages = [];
 
         if ($request->hasFile('images')) {
 
-            foreach ($request->file('images') as $image) {
+            foreach ($request->file('images') as $key => $image) {
 
                 // Guarda la imagen físicamente
                 $path = $image->store(
@@ -131,6 +132,8 @@ class ReportController extends Controller
                     'image_path' => $path
 
                 ]);
+
+                $whatsappImages['image' . ($key + 1)] = asset('storage/' . $path);
             }
         }
 
@@ -151,6 +154,7 @@ class ReportController extends Controller
         return redirect()
             ->route('reports.create')
             ->with('success', 'Reporte enviado correctamente.')
-            ->with('whatsapp_text', $reporteMensaje); //guarda en wasap web en contenido de reporteMnesaje
-    }
+            ->with('whatsapp_text', $reporteMensaje) //guarda en wasap web en contenido de reporteMnesaje
+            ->with('whatsapp_images', $whatsappImages);
+            }
 }

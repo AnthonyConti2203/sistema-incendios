@@ -183,20 +183,26 @@
                         se puso "a" ya que se esta usando tailwind css
                         -->
                     @if (session('success') && session('whatsapp_text'))
-                        <!--
-                        -el session es como un casillero temporal, cuando el usuario 
-                        guard o envio el reporte y cuando el controlador guardo el etxto que se 
-                        va a usar en el simulador
-                        -->
+                        @php
+                            // 1. Creamos la bolsa de parámetros con el texto inicial
+                            $parametrosUrl = ['text' => session('whatsapp_text')];
+                            
+                            // 2. Extraemos el array de imágenes que guardó el controlador en la sesión
+                            $imagenesSesion = session('whatsapp_images', []);
+                            
+                            // 3. Juntamos todo en una sola lista de variables para la URL
+                            if (!empty($imagenesSesion) && is_array($imagenesSesion)) {
+                                $parametrosUrl = array_merge($parametrosUrl, $imagenesSesion);
+                            }
+                        @endphp
+
                         <div class="mb-6 flex justify-center">
-                            <a href="{{ route('whatsapp.simulator', ['text' => session('whatsapp_text')]) }}" 
-                            class="inline-flex items-center px-5 py-3 bg-green-600 
-                            hover:bg-green-700 text-white font-bold text-sm rounded-lg shadow-md">
-                            Ir simulador
+                            <a href="{{ route('whatsapp.simulator', $parametrosUrl) }}" 
+                            class="inline-flex items-center px-5 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-lg shadow-md transition-all duration-200">
+                                Ir simulador
                             </a>
                         </div>
                     @endif
-
                 </form>
             </div>
         </div>

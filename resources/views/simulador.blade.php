@@ -31,15 +31,22 @@
                     @if(request()->query('text'))
                         <div class="globo-whatsapp">
                             {!! nl2br(e(request()->query('text'))) !!}
-                            <!--
+                            {{--
                                 esta linea de codigo es
                                 -request()-. query(text) agarra el texto 
                                 -e es una funcion que impia el texto, evita que se meta codigo dañino como el caso de XSS
                                 -nl2br encargada de convertir los saltos en linea normales en etiquetas, para que no queden pegadas
-                                -{!!...!!} le dice al motor de vistas de laravel que muestre el resultado inteprendando los br
-                            -->
+                                -"{!!...!!}" le dice al motor de vistas de laravel que muestre el resultado inteprendando los br
+                            --}}
                         </div>
                     @endif
+                    @for($i = 1; $i <= 3; $i++)
+                        @if(request()->query("image$i"))
+                            <div class="globo-whatsapp" style="padding: 4px; max-width: 75%; background-color: #d9fdd3; margin-top: 5px; border-radius: 8px; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); margin-left: auto;">
+                                <img src="{{ request()->query("image$i") }}" alt="Foto Incendio" style="width: 100%; height: auto; max-height: 250px; object-fit: cover; border-radius: 6px; display: block;">
+                            </div>
+                        @endif
+                    @endfor
                 </div>
 
                 <div class="contenedor-mensaje">
@@ -90,6 +97,21 @@
             margin-top: 5px;
         }
 
+        /* Estilo para que la burbuja se adapte a la foto */
+        .globo-whatsapp.globo-imagen {
+            padding: 3px; 
+            max-width: 75%;
+        }
+
+        .globo-whatsapp.globo-imagen img {
+            width: 100%;
+            height: auto;
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 6px;
+            display: block;
+        }
+
         .perfil {
             width: 38px;
             height: 38px;
@@ -130,7 +152,8 @@
         .cuerpo-principal {
             flex: 1;
             background: #ECE5DD;
-            background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5YSIRmnGhV-rXmXlglkBmxFmjQY4xSEXV--mapgn-ZQ&s=10);
+            background-image: 
+            url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5YSIRmnGhV-rXmXlglkBmxFmjQY4xSEXV--mapgn-ZQ&s=10);
             background-size: 200px;
             background-position: center;
             background-repeat: repeat;
