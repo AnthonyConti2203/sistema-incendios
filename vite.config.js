@@ -10,8 +10,8 @@ export default defineConfig({
     ],
     // Intento de ponerlo en servidor para acceder con celular
     
-    /*server: {
+    server: {
         host: true,
         port: 5173,
-    }, */
+    },
 });

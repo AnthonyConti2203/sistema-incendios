@@ -63,11 +63,11 @@ class ReportController extends Controller
             // Solo se aceptan estos dos valores
             'location_type' => 'required|in:auto,manual',
 
-            // Arreglo de imágenes (máximo 3)
+            // Arreglo de imágenes (máximo 3) y validación de cada archivo
             'images' => 'nullable|array|max:3',
 
-            // Cada archivo debe ser una imagen JPG o PNG
-            'images.*' => 'image|mimes:jpg,jpeg,png|max:5120',
+            // Cada archivo debe ser una imagen JPG, jpeg o PNG
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:10240',
         ]);
 
         /*
