@@ -113,18 +113,23 @@ class ReportController extends Controller
         |
         */
         $whatsappImages = [];
+        //se crea un array donde se ira llenando las urls de la imagenes
 
         if ($request->hasFile('images')) {
+            //esto es si el usuario subio imagenes, si no es asi se salta todo esto
 
             foreach ($request->file('images') as $key => $image) {
+                //el foreach recorre cada imagen, el $key es el indice osea 0,1 y 2 
 
                 // Guarda la imagen físicamente
                 $path = $image->store(
                     'reports',
                     'public'
                 );
+                //se guarda eb reports, laravel genera un nombre unico
+                //retorna la ruta reports/nombre de lo que le da.jpg
 
-                // Guarda la ruta en SQLite
+                // Guarda la ruta en SQLite osea en la base de datos
                 ReportImage::create([
 
                     'report_id' => $reporte->id,
@@ -134,12 +139,13 @@ class ReportController extends Controller
                 ]);
 
                 $whatsappImages['image' . ($key + 1)] = asset('storage/' . $path);
+                //el asset es para que pueda abrir en el navegador las imagenes
             }
         }
 
         $reporteMensaje = " *REPORTE DE INCENDIO ENVIADO* \n\n" .
             " *Descripción:* " . ($reporte->description ?? 'Sin descripción') . "\n" .
-            //lo que hace el ?? es si hay descripcion se toma , sino se pone sin descripcion
+            //lo que hace el ?? es si hay descripcion se toma , sino se pone sin descripcion en el mensaje
             " *Coordenadas:* Lat: " . $reporte->latitude . ", Lng: " . $reporte->longitude;
         /*
         |--------------------------------------------------------------------------
@@ -155,6 +161,7 @@ class ReportController extends Controller
             ->route('reports.create')
             ->with('success', 'Reporte enviado correctamente.')
             ->with('whatsapp_text', $reporteMensaje) //guarda en wasap web en contenido de reporteMnesaje
-            ->with('whatsapp_images', $whatsappImages);
+            ->with('whatsapp_images', $whatsappImages);//es el array , se guarda las url 
+            //para poder utilizarla en el simulador
             }
 }

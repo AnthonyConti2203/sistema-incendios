@@ -41,7 +41,13 @@
                         </div>
                     @endif
                     @for($i = 1; $i <= 3; $i++)
+                    <!--
+                    esto lo que hace es recorrer
+                -->
                         @if(request()->query("image$i"))
+                        <!--
+                    lo que se hace aca es que imagen se mostrara, osea de acuerdo al for
+                -->
                             <div class="globo-whatsapp" style="padding: 4px; max-width: 75%; background-color: #d9fdd3; margin-top: 5px; border-radius: 8px; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); margin-left: auto;">
                                 <img src="{{ request()->query("image$i") }}" alt="Foto Incendio" style="width: 100%; height: auto; max-height: 250px; object-fit: cover; border-radius: 6px; display: block;">
                             </div>
@@ -81,7 +87,7 @@
             gap: 12px;
         }
 
-        /*esto es para que se muestre como en el whatApp*/
+        /*el globito del wasap, al menos una simulacion jeje*/
         .globo-whatsapp {
             background: #DCF8C6;
             color: #303030;
@@ -97,7 +103,7 @@
             margin-top: 5px;
         }
 
-        /* Estilo para que la burbuja se adapte a la foto */
+        /* Estilo para que donde estar la foto se adapte la burbuja*/
         .globo-whatsapp.globo-imagen {
             padding: 3px; 
             max-width: 75%;
@@ -148,7 +154,7 @@
             gap: 16px;
             font-size: 18px;
         }
-
+        /*este es el cuerpo principal donde estara todo*/
         .cuerpo-principal {
             flex: 1;
             background: #ECE5DD;

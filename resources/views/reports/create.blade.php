@@ -183,16 +183,34 @@
                         se puso "a" ya que se esta usando tailwind css
                         -->
                     @if (session('success') && session('whatsapp_text'))
+                        <!--
+                        esto se mostrara si el reporte se envio correctmanente
+                        y si hay un mensaje de wasap
+                        -->
                         @php
                             // 1. Creamos la bolsa de parámetros con el texto inicial
                             $parametrosUrl = ['text' => session('whatsapp_text')];
+                            <!--
+                        es el mensaje que se guardo , osea la descripcion , longitud, etc
+                        -->
                             
                             // 2. Extraemos el array de imágenes que guardó el controlador en la sesión
                             $imagenesSesion = session('whatsapp_images', []);
+                            <!--
+                        aca saca el array del url que se guardo en el controller
+                        , el [] es el valor vacio, eso pasa si es que no hay imagenes
+                        -->
                             
                             // 3. Juntamos todo en una sola lista de variables para la URL
                             if (!empty($imagenesSesion) && is_array($imagenesSesion)) {
                                 $parametrosUrl = array_merge($parametrosUrl, $imagenesSesion);
+                                <!--
+                        !empty($imagenesSesion)-  que el array de las imagenes no este vacio
+                        !is_array($imagenesSesion)- que sea una array, como ya se hablo
+
+                        el $parametroUrl es lo que junta los textos y las imagenes , como un array
+                        osea que lo junta
+                        -->
                             }
                         @endphp
 
@@ -201,6 +219,10 @@
                             class="inline-flex items-center px-5 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-lg shadow-md transition-all duration-200">
                                 Ir simulador
                             </a>
+                            <!--
+                        los que hace el route es generar el url con todos eoso datos como parametros
+                        el simulador los recibe por URL y se muestra en el chat
+                        -->
                         </div>
                     @endif
                 </form>
