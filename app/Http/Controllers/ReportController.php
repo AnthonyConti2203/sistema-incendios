@@ -139,7 +139,7 @@ class ReportController extends Controller
                 ]);
 
                 $whatsappImages['image' . ($key + 1)] = asset('storage/' . $path);
-                //el asset es para que pueda abrir en el navegador las imagenes
+                //el asset es para que pueda abrir en el navegador las imagenes generando url completa
             }
         }
 
