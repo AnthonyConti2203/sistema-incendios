@@ -188,20 +188,20 @@
                         y si hay un mensaje de wasap
                         -->
                         @php
-                            // 1. Creamos la bolsa de parámetros con el texto inicial
+                            
                             $parametrosUrl = ['text' => session('whatsapp_text')];
                             <!--
                         es el mensaje que se guardo , osea la descripcion , longitud, etc
                         -->
                             
-                            // 2. Extraemos el array de imágenes que guardó el controlador en la sesión
+                            
                             $imagenesSesion = session('whatsapp_images', []);
                             <!--
                         aca saca el array del url que se guardo en el controller
                         , el [] es el valor vacio, eso pasa si es que no hay imagenes
                         -->
                             
-                            // 3. Juntamos todo en una sola lista de variables para la URL
+                            
                             if (!empty($imagenesSesion) && is_array($imagenesSesion)) {
                                 $parametrosUrl = array_merge($parametrosUrl, $imagenesSesion);
                                 <!--
@@ -344,29 +344,6 @@
         ubicacionAutoInfo.classList.remove('hidden');
     }
 
-    // Si ya había valores guardados por old()
-    //osea si ya hay algo escrito
-    //despues de un error de validacion
-    /*if (inputLat.value && inputLng.value) {
-        //convierte de texto a numero
-        //osea de "123" a 123
-        const lat = parseFloat(inputLat.value);
-        const lng = parseFloat(inputLng.value);
-
-        //aca centra el mapa en esto con zoom a 15
-        mapa.setView([lat, lng], 15);
-        //el tofixed es la cantidad de decimales 
-        ponerMarcador(lat, lng, `📍 ${lat.toFixed(5)}, ${lng.toFixed(5)}`);
-
-        // Si ya había ubicación, mostramos el mapa
-        mapSection.classList.remove('hidden');
-
-        //aca es si la ubicacion es automatica
-        if (inputTipo.value === 'auto') {
-            //muestra el mensaje osea ya se vio
-            ubicacionAutoInfo.classList.remove('hidden');
-        }
-    }*/
 
     // Elegir ubicación manualmente en el mapa
     btnMapa.addEventListener('click', () => {
